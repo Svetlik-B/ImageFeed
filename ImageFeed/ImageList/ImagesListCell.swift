@@ -11,10 +11,7 @@ class ImagesListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.likeButton.setTitle("", for: .normal)
-        self.likeButton.setImage(UIImage(named: "Heart Red"), for: .normal)
-        self.likeButton.layer.borderWidth = 2
-        self.likeButton.layer.borderColor = UIColor.red.cgColor
+        separatorInset = .init(top: 50, left: 0, bottom: 0, right: 0)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

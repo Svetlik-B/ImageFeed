@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,9 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="BsG-jU-EPN">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="BsG-jU-EPN">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                                 <color key="backgroundColor" name="YP Black"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="200" id="aSd-Md-cv3" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="402" height="200"/>
@@ -28,35 +30,67 @@
                                             <rect key="frame" x="0.0" y="0.0" width="402" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="La1-YS-jbH">
-                                                    <rect key="frame" x="0.0" y="0.0" width="402" height="200"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <view alpha="0.20000000000000001" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Ii-8G-c84">
-                                                    <rect key="frame" x="0.0" y="170" width="402" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" name="YP Black"/>
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="us6-oA-Qjq" userLabel="Round View">
+                                                    <rect key="frame" x="16" y="4" width="370" height="192"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" image="0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="La1-YS-jbH">
+                                                            <rect key="frame" x="0.0" y="0.0" width="370" height="192"/>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGy-9j-auf">
+                                                            <rect key="frame" x="326" y="0.0" width="44" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="44" id="7bJ-LF-Nqp"/>
+                                                                <constraint firstAttribute="width" constant="44" id="eDl-Ek-syX"/>
+                                                            </constraints>
+                                                            <buttonConfiguration key="configuration" style="plain" image="No Active"/>
+                                                        </button>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ii-8G-c84">
+                                                            <rect key="frame" x="0.0" y="162" width="370" height="30"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="26 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CFd-UH-gNv">
+                                                                    <rect key="frame" x="8" y="6.3333333333333419" width="102.33333333333333" height="15.666666666666664"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" name="YP Black 20"/>
+                                                            <constraints>
+                                                                <constraint firstItem="CFd-UH-gNv" firstAttribute="leading" secondItem="0Ii-8G-c84" secondAttribute="leading" constant="8" id="51W-aL-enK"/>
+                                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CFd-UH-gNv" secondAttribute="trailing" constant="8" id="75y-cH-CE2"/>
+                                                                <constraint firstAttribute="height" constant="30" id="vZ0-WW-fa5"/>
+                                                                <constraint firstAttribute="bottom" secondItem="CFd-UH-gNv" secondAttribute="bottom" constant="8" id="yf4-fl-eAi"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="0Ii-8G-c84" secondAttribute="trailing" id="796-7G-7WP"/>
+                                                        <constraint firstAttribute="bottom" secondItem="0Ii-8G-c84" secondAttribute="bottom" id="8sK-3M-H1L"/>
+                                                        <constraint firstItem="RGy-9j-auf" firstAttribute="top" secondItem="us6-oA-Qjq" secondAttribute="top" id="DPZ-VB-Cvz"/>
+                                                        <constraint firstItem="La1-YS-jbH" firstAttribute="leading" secondItem="us6-oA-Qjq" secondAttribute="leading" id="MnG-Yh-0GZ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="RGy-9j-auf" secondAttribute="trailing" id="YX7-Ya-9ZE"/>
+                                                        <constraint firstAttribute="trailing" secondItem="La1-YS-jbH" secondAttribute="trailing" id="crk-lq-1yI"/>
+                                                        <constraint firstItem="0Ii-8G-c84" firstAttribute="leading" secondItem="us6-oA-Qjq" secondAttribute="leading" id="kYJ-87-7fD"/>
+                                                        <constraint firstItem="La1-YS-jbH" firstAttribute="top" secondItem="us6-oA-Qjq" secondAttribute="top" id="sjr-fT-5AR"/>
+                                                        <constraint firstAttribute="bottom" secondItem="La1-YS-jbH" secondAttribute="bottom" id="u3H-t3-R9u"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="26 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CFd-UH-gNv">
-                                                    <rect key="frame" x="8" y="174" width="129" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGy-9j-auf">
-                                                    <rect key="frame" x="358" y="0.0" width="44" height="44"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="Heart Red" imagePlacement="top"/>
-                                                </button>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="us6-oA-Qjq" secondAttribute="trailing" constant="16" id="8Fm-Fk-QZR"/>
+                                                <constraint firstAttribute="bottom" secondItem="us6-oA-Qjq" secondAttribute="bottom" constant="4" id="LVr-CD-jYo"/>
+                                                <constraint firstItem="us6-oA-Qjq" firstAttribute="top" secondItem="p2g-VA-X2J" secondAttribute="top" constant="4" id="alb-Uh-cv1"/>
+                                                <constraint firstItem="us6-oA-Qjq" firstAttribute="leading" secondItem="p2g-VA-X2J" secondAttribute="leading" constant="16" id="hgu-Cf-Gwy"/>
+                                            </constraints>
                                         </tableViewCellContentView>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="16"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="gradientView" destination="0Ii-8G-c84" id="sNF-OE-OGt"/>
                                             <outlet property="label" destination="CFd-UH-gNv" id="gfN-oR-MKf"/>
@@ -91,9 +125,15 @@
     </scenes>
     <resources>
         <image name="0.jpg" width="1600" height="1059"/>
-        <image name="Heart Red" width="30" height="26"/>
+        <image name="No Active" width="30" height="26"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="YP Black 20">
+            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
