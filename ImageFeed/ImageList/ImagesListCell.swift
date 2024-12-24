@@ -7,16 +7,17 @@ class ImagesListCell: UITableViewCell {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var gradientView: UIView!
+    private(set) var gradient: CAGradientLayer!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let gradient = CAGradientLayer()
-        gradient.frame = gradientView.bounds
-        gradient.colors = [
+        self.gradient = CAGradientLayer()
+        self.gradient.frame = self.gradientView.bounds
+        self.gradient.colors = [
             UIColor(named: "YP Black 0")!.cgColor,
             UIColor(named: "YP Black 20")!.cgColor,
         ]
-        gradientView.layer.insertSublayer(gradient, at: 0)
+        self.gradientView.layer.insertSublayer(self.gradient, at: 0)
     }
 }

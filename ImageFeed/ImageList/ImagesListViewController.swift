@@ -2,10 +2,8 @@ import UIKit
 
 class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
 }
@@ -13,7 +11,7 @@ class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        20
+        return Constants.numberOfImages
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -36,9 +34,8 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard
-            let image = UIImage(named: "\(indexPath.row).jpg")
-        else { return 200 }
+        guard let image = self.imageForIndexPath(indexPath)
+        else { return 0 }
         
         return tableView.bounds.width * image.size.height / image.size.width
     }
@@ -46,19 +43,29 @@ extension ImagesListViewController: UITableViewDelegate {
 
 private extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        
-        let image: UIImage? = UIImage(named: "\(indexPath.row).jpg")
-        
-        
-        
-        cell.label.text = formatter.string(from: Date())
+        // ширина градиента больше чем ширина фото, но он обрезается
+        cell.gradient.frame.size.width = tableView.bounds.width
+        cell.photo.image = self.imageForIndexPath(indexPath)
+        cell.label.text = dateFormatter.string(from: Date())
         cell.likeButton.setImage(
-            indexPath.row % 2 == 0 ? UIImage(named: "Active") : UIImage(named: "No Active"),
+            indexPath.row % 2 == 0
+            ? UIImage(named: "Active")
+            : UIImage(named: "No Active"),
             for: .normal
         )
-        cell.photo.image = image
+    }
+    func imageForIndexPath(_ indexPath: IndexPath) -> UIImage? {
+        UIImage(named: "\(indexPath.row).jpg")
     }
 }
+
+private enum Constants {
+    static let numberOfImages = 20
+}
+
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .long
+    formatter.timeStyle = .none
+    return formatter
+}()
