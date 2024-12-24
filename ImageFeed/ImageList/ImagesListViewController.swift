@@ -5,6 +5,8 @@ class ImagesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.rowHeight = 200
     }
 }
 
@@ -16,8 +18,18 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        return cell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: ImagesListCell.reuseIdentifier,
+            for: indexPath
+        )
+        guard let imagesListCell = cell as? ImagesListCell
+        else {
+            return cell
+        }
+        
+        configCell(for: imagesListCell)
+        
+        return imagesListCell
     }
 }
 
@@ -25,4 +37,11 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController: UITableViewDelegate {
     
+}
+
+private extension ImagesListViewController {
+    func configCell(for cell: ImagesListCell) {
+        cell.label.text = "Hello World!"
+        cell.photo.image = UIImage(named: "1.jpg")
+    }
 }
