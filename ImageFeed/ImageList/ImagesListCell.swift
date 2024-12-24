@@ -11,11 +11,12 @@ class ImagesListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        separatorInset = .init(top: 50, left: 0, bottom: 0, right: 0)
+        let gradient = CAGradientLayer()
+        gradient.frame = gradientView.bounds
+        gradient.colors = [
+            UIColor(named: "YP Black 0")!.cgColor,
+            UIColor(named: "YP Black 20")!.cgColor,
+        ]
+        gradientView.layer.insertSublayer(gradient, at: 0)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
 }

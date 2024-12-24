@@ -2,14 +2,11 @@ import UIKit
 
 class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        tableView.separatorInset = .init(top: 50, left: 0, bottom: 0, right: 0)
-
     }
 }
 // MARK: - UITableViewDataSource
@@ -43,7 +40,7 @@ extension ImagesListViewController: UITableViewDelegate {
             let image = UIImage(named: "\(indexPath.row).jpg")
         else { return 200 }
         
-        return tableView.frame.width * image.size.height / image.size.width
+        return tableView.bounds.width * image.size.height / image.size.width
     }
 }
 
