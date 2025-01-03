@@ -10,6 +10,56 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Item 2-->
+        <scene sceneID="Cr6-iB-zT9">
+            <objects>
+                <viewController id="tqy-FP-rHC" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mob-2a-JiP">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Ayf-qd-6ZG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="3LB-X6-bE9"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kAG-vQ-Ffw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-609" y="209"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="1gj-qE-hL0">
+            <objects>
+                <viewController id="7fL-xc-0kJ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="I1Y-l0-X8p">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="6No-tl-c4U"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="Ouu-U1-dhi"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vai-5F-nYy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-609" y="-399"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="u9v-hY-FsE">
+            <objects>
+                <tabBarController id="pfo-Jm-vKa" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="CQY-mY-jfL">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="7fL-xc-0kJ" kind="relationship" relationship="viewControllers" id="KkG-kv-CqV"/>
+                        <segue destination="tqy-FP-rHC" kind="relationship" relationship="viewControllers" id="Szi-ep-kyn"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zhV-jW-NAJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1506" y="-95"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="iMG-MK-c3t">
             <objects>
@@ -202,9 +252,9 @@
     </scenes>
     <resources>
         <image name="0.jpg" width="1600" height="1059"/>
-        <image name="Exit" width="16" height="16"/>
+        <image name="Exit" width="24" height="24"/>
         <image name="No Active" width="30" height="26"/>
-        <image name="Photo" width="23.333333969116211" height="23.333333969116211"/>
+        <image name="Photo" width="70" height="70"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
