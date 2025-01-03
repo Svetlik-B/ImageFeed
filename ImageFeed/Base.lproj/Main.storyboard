@@ -79,7 +79,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8Zd-jf-gz4"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="LEc-Bb-FXG" firstAttribute="leading" secondItem="SB5-48-PM2" secondAttribute="leading" id="0LX-d3-PM6"/>
                             <constraint firstItem="8Zd-jf-gz4" firstAttribute="trailing" secondItem="t2g-cw-mOL" secondAttribute="trailing" constant="16" id="2W9-q4-Fm9"/>
