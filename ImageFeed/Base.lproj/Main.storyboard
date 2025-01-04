@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9CO-4u-qUX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pfo-Jm-vKa">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -41,7 +41,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="wHB-ez-c3o">
-                                <rect key="frame" x="0.0" y="62" width="402" height="778"/>
+                                <rect key="frame" x="0.0" y="106" width="402" height="685"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8SV-CI-4CS"/>
@@ -53,13 +53,14 @@
                             <constraint firstItem="wHB-ez-c3o" firstAttribute="leading" secondItem="8SV-CI-4CS" secondAttribute="leading" id="ytt-H7-a84"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="gsu-UB-lyE"/>
                     <connections>
                         <outlet property="imageView" destination="wHB-ez-c3o" id="i1p-dA-Eh4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jYg-F4-QJD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-501" y="533"/>
+            <point key="canvasLocation" x="1470" y="-163"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="iMG-MK-c3t">
@@ -152,7 +153,7 @@
                                 <color key="backgroundColor" name="YP Black"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="200" id="aSd-Md-cv3" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="200" id="aSd-Md-cv3" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="402" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aSd-Md-cv3" id="p2g-VA-X2J">
@@ -225,6 +226,7 @@
                                             <outlet property="label" destination="CFd-UH-gNv" id="gfN-oR-MKf"/>
                                             <outlet property="likeButton" destination="RGy-9j-auf" id="SCr-PL-ZSa"/>
                                             <outlet property="photo" destination="La1-YS-jbH" id="Wxh-cJ-wqT"/>
+                                            <segue destination="9CO-4u-qUX" kind="show" id="JDp-0c-82Y"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
