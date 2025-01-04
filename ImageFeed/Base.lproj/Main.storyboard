@@ -32,6 +32,35 @@
             </objects>
             <point key="canvasLocation" x="-1464" y="-498"/>
         </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="SyN-UK-3YX">
+            <objects>
+                <viewController id="9CO-4u-qUX" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="o26-g0-ybp">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wHB-ez-c3o">
+                                <rect key="frame" x="0.0" y="62" width="402" height="778"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="8SV-CI-4CS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="wHB-ez-c3o" firstAttribute="top" secondItem="8SV-CI-4CS" secondAttribute="top" id="7Km-qb-hcA"/>
+                            <constraint firstItem="8SV-CI-4CS" firstAttribute="bottom" secondItem="wHB-ez-c3o" secondAttribute="bottom" id="ECO-yl-Edy"/>
+                            <constraint firstItem="8SV-CI-4CS" firstAttribute="trailing" secondItem="wHB-ez-c3o" secondAttribute="trailing" id="dOh-3Y-ko6"/>
+                            <constraint firstItem="wHB-ez-c3o" firstAttribute="leading" secondItem="8SV-CI-4CS" secondAttribute="leading" id="ytt-H7-a84"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="wHB-ez-c3o" id="i1p-dA-Eh4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jYg-F4-QJD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-501" y="533"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="iMG-MK-c3t">
             <objects>
