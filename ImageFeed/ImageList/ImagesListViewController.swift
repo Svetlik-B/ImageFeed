@@ -1,11 +1,29 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
+
     @IBOutlet private var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard segue.identifier == showSingleImageSegueIdentifier
+        else {
+            super.prepare(for: segue, sender: sender)
+            return
+        }
+        
+        guard let viewController = segue.destination as? SingleImageViewController
+        else {
+            assertionFailure("Invalid segue destination")
+            return
+        }
+        viewController.image = sender as? UIImage
+    }    
 }
 // MARK: - UITableViewDataSource
 
@@ -38,6 +56,12 @@ extension ImagesListViewController: UITableViewDelegate {
         else { return 0 }
         
         return tableView.bounds.width * image.size.height / image.size.width
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(
+            withIdentifier: showSingleImageSegueIdentifier,
+            sender: imageForIndexPath(indexPath)
+        )
     }
 }
 

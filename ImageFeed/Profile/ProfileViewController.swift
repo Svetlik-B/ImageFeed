@@ -1,6 +1,6 @@
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var loginLabel: UILabel!
     @IBOutlet private var textLabel: UILabel!
