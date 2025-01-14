@@ -2,7 +2,7 @@ import UIKit
 
 class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
-
+    
     @IBOutlet weak var photo: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var label: UILabel!

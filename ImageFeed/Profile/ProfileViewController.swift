@@ -11,15 +11,15 @@ final class ProfileViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         NSLayoutConstraint.activate([
-        imageView.widthAnchor.constraint(equalToConstant: 70),
-        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
         ])
         
         let nameLabel = UILabel()
         nameLabel.text = "Екатерина Новикова"
-        nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = .white
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
@@ -31,13 +31,13 @@ final class ProfileViewController: UIViewController {
         let loginLabel = UILabel()
         loginLabel.text = "@ekaterina_nov"
         loginLabel.font = UIFont.systemFont(ofSize: 13)
-        loginLabel.textColor = .white
+        loginLabel.textColor = UIColor.ypGray
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginLabel)
         NSLayoutConstraint.activate([
             loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8)
-            ])
+        ])
         
         let textLabel = UILabel()
         textLabel.text = "Hello, World!"
@@ -48,13 +48,13 @@ final class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8),
-            ])
-    
+        ])
+        
         let buttonEntrance = UIButton.systemButton(
-            with: UIImage(named: "Exit")!,
+            with: UIImage(named: "Exit") ?? UIImage(),
             target: self,
             action: #selector(buttonLogin))
-        buttonEntrance.tintColor = .red
+        buttonEntrance.tintColor = UIColor.ypRed
         buttonEntrance.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonEntrance)
         NSLayoutConstraint.activate([

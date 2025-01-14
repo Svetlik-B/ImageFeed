@@ -3,15 +3,18 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var imageView: UIImageView!
+    
     var image: UIImage? {
         didSet {
             guard isViewLoaded else { return }
             self.setupImage(image)
         }
     }
+    
     @IBAction private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func didTapShareButton() {
         guard let image else { return }
         let activityViewController = UIActivityViewController(
@@ -40,7 +43,7 @@ extension SingleImageViewController {
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-            return imageView
+        return imageView
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
