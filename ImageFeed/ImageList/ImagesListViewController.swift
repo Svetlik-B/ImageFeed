@@ -82,10 +82,6 @@ private extension ImagesListViewController {
     }
 }
 
-private enum Constants {
-    static let numberOfImages = 20
-}
-
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .long
