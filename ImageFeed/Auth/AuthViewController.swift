@@ -3,7 +3,7 @@ import UIKit
 
 private let showWebViewSegueIdentifier = "ShowWebView"
 
-class AuthViewController: UIViewController {
+final class AuthViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
             if let vc = segue.destination as? WebViewViewController {

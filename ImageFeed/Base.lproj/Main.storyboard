@@ -173,6 +173,11 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ory-rP-HiE">
+                                <rect key="frame" x="0.0" y="106" width="402" height="2.6666666666666714"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                                <color key="trackTintColor" name="YP Gray"/>
+                            </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tjl-Hb-0vK">
                                 <rect key="frame" x="-1" y="62" width="44" height="44"/>
                                 <constraints>
@@ -190,8 +195,11 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="bam-j9-2CT" firstAttribute="top" secondItem="tjl-Hb-0vK" secondAttribute="bottom" id="5AD-LV-YTR"/>
+                            <constraint firstItem="d3E-F5-5b9" firstAttribute="trailing" secondItem="ory-rP-HiE" secondAttribute="trailing" id="Gou-Uv-kdT"/>
                             <constraint firstItem="bam-j9-2CT" firstAttribute="leading" secondItem="9Lp-oG-gVP" secondAttribute="leading" id="USD-4H-zqw"/>
                             <constraint firstItem="tjl-Hb-0vK" firstAttribute="leading" secondItem="d3E-F5-5b9" secondAttribute="leading" constant="-1" id="dGO-Dx-ikw"/>
+                            <constraint firstItem="ory-rP-HiE" firstAttribute="top" secondItem="bam-j9-2CT" secondAttribute="top" id="eEG-tr-aac"/>
+                            <constraint firstItem="ory-rP-HiE" firstAttribute="leading" secondItem="d3E-F5-5b9" secondAttribute="leading" id="g7w-uD-bkf"/>
                             <constraint firstItem="tjl-Hb-0vK" firstAttribute="top" secondItem="d3E-F5-5b9" secondAttribute="top" id="kR3-OP-Iuh"/>
                             <constraint firstAttribute="bottom" secondItem="bam-j9-2CT" secondAttribute="bottom" id="ufi-Om-567"/>
                             <constraint firstItem="bam-j9-2CT" firstAttribute="trailing" secondItem="9Lp-oG-gVP" secondAttribute="trailing" id="wyp-88-Lci"/>
@@ -201,6 +209,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="backButton" destination="tjl-Hb-0vK" id="tfh-19-J4d"/>
+                        <outlet property="progressView" destination="ory-rP-HiE" id="6qV-Ld-E9D"/>
                         <outlet property="webView" destination="bam-j9-2CT" id="QMn-4z-61o"/>
                     </connections>
                 </viewController>
@@ -369,6 +378,9 @@
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP Gray">
+            <color red="0.68235301971435547" green="0.68627452850341797" blue="0.70588237047195435" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
