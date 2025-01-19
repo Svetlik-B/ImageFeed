@@ -137,7 +137,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="nxW-lF-Ar3" kind="show" id="8cx-Zj-nNM"/>
+                                    <segue destination="nxW-lF-Ar3" kind="show" identifier="ShowWebView" id="8cx-Zj-nNM"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -157,21 +157,40 @@
             </objects>
             <point key="canvasLocation" x="-267" y="-1703"/>
         </scene>
-        <!--View Controller-->
+        <!--Web View View Controller-->
         <scene sceneID="Kx3-WT-NLS">
             <objects>
-                <viewController id="nxW-lF-Ar3" sceneMemberID="viewController">
+                <viewController id="nxW-lF-Ar3" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Lp-oG-gVP">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bam-j9-2CT">
+                                <rect key="frame" x="0.0" y="106" width="402" height="768"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="d3E-F5-5b9"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bam-j9-2CT" firstAttribute="top" secondItem="d3E-F5-5b9" secondAttribute="top" id="5AD-LV-YTR"/>
+                            <constraint firstItem="bam-j9-2CT" firstAttribute="leading" secondItem="9Lp-oG-gVP" secondAttribute="leading" id="USD-4H-zqw"/>
+                            <constraint firstAttribute="bottom" secondItem="bam-j9-2CT" secondAttribute="bottom" id="ufi-Om-567"/>
+                            <constraint firstItem="bam-j9-2CT" firstAttribute="trailing" secondItem="9Lp-oG-gVP" secondAttribute="trailing" id="wyp-88-Lci"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="P4q-6k-aGU"/>
+                    <connections>
+                        <outlet property="webView" destination="bam-j9-2CT" id="Edv-uX-f71"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWg-Mr-hBx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="660" y="-1703"/>
+            <point key="canvasLocation" x="659.70149253731336" y="-1703.203661327231"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="iMG-MK-c3t">
