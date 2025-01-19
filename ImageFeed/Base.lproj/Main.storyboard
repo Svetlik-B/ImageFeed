@@ -173,19 +173,35 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tjl-Hb-0vK">
+                                <rect key="frame" x="-1" y="62" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="UAg-QP-5yj"/>
+                                    <constraint firstAttribute="width" constant="44" id="nvz-vK-pPY"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Backward"/>
+                                <connections>
+                                    <action selector="backButtonPressed:" destination="nxW-lF-Ar3" eventType="touchUpInside" id="qI7-tB-DeI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="d3E-F5-5b9"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="bam-j9-2CT" firstAttribute="top" secondItem="d3E-F5-5b9" secondAttribute="top" id="5AD-LV-YTR"/>
+                            <constraint firstItem="bam-j9-2CT" firstAttribute="top" secondItem="tjl-Hb-0vK" secondAttribute="bottom" id="5AD-LV-YTR"/>
                             <constraint firstItem="bam-j9-2CT" firstAttribute="leading" secondItem="9Lp-oG-gVP" secondAttribute="leading" id="USD-4H-zqw"/>
+                            <constraint firstItem="tjl-Hb-0vK" firstAttribute="leading" secondItem="d3E-F5-5b9" secondAttribute="leading" constant="-1" id="dGO-Dx-ikw"/>
+                            <constraint firstItem="tjl-Hb-0vK" firstAttribute="top" secondItem="d3E-F5-5b9" secondAttribute="top" id="kR3-OP-Iuh"/>
                             <constraint firstAttribute="bottom" secondItem="bam-j9-2CT" secondAttribute="bottom" id="ufi-Om-567"/>
                             <constraint firstItem="bam-j9-2CT" firstAttribute="trailing" secondItem="9Lp-oG-gVP" secondAttribute="trailing" id="wyp-88-Lci"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="P4q-6k-aGU"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="webView" destination="bam-j9-2CT" id="Edv-uX-f71"/>
+                        <outlet property="backButton" destination="tjl-Hb-0vK" id="tfh-19-J4d"/>
+                        <outlet property="webView" destination="bam-j9-2CT" id="QMn-4z-61o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWg-Mr-hBx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

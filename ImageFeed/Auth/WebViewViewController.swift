@@ -16,7 +16,12 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
+    @IBOutlet private var backButton: UIButton!
     weak var delegate: WebViewViewControllerDelegate?
+
+    @IBAction func backButtonPressed(_ sender: UIButton) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,13 +78,17 @@ extension WebViewViewController {
     }
 
     fileprivate func configureBackButton() {
-        // TODO: исправить код замены back button
-        navigationController?.navigationBar.backIndicatorImage = UIImage(
-            named: "Backward")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage =
-            UIImage(named: "Backward")
-        navigationItem.backBarButtonItem = UIBarButtonItem(
-            title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
+        navigationController?.setNavigationBarHidden(
+            true,
+            animated: false
+        )
+        backButton.setImage(
+            UIImage(named: "Backward")?.withTintColor(UIColor(named: "YP Black")!),
+            for: .normal
+        )
+        backButton.setImage(
+            UIImage(named: "Backward")?.withTintColor(UIColor(named: "YP Gray")!),
+            for: .highlighted
+        )
     }
 }
