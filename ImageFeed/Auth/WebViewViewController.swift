@@ -4,6 +4,7 @@ import WebKit
 
 enum WebViewConstants {
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    static let path = "/oauth/authorize/native"
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -60,7 +61,10 @@ final class WebViewViewController: UIViewController {
     }
 
     private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
+        progressView.setProgress(
+            Float(webView.estimatedProgress),
+            animated: true
+        )
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }
@@ -87,7 +91,7 @@ extension WebViewViewController {
     fileprivate func code(from navigationAction: WKNavigationAction) -> String? {
         if let url = navigationAction.request.url,
             let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
+           urlComponents.path == WebViewConstants.path,
             let items = urlComponents.queryItems,
             let codeItem = items.first(where: { $0.name == "code" })
         {
@@ -98,7 +102,10 @@ extension WebViewViewController {
     }
     fileprivate func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString)
-        else { return }
+        else {
+            print("Ошибка: невозможно создать URLComponents")
+            return
+        }
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
@@ -106,7 +113,10 @@ extension WebViewViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope),
         ]
         guard let url = urlComponents.url
-        else { return }
+        else {
+            print("Ошибка: невозможно создать URL")
+            return
+        }
         let request = URLRequest(url: url)
         webView.load(request)
     }
@@ -117,12 +127,45 @@ extension WebViewViewController {
             animated: false
         )
         backButton.setImage(
-            UIImage(named: "Backward")?.withTintColor(UIColor(named: "YP Black")!),
+            Constant.backward.withTintColor(Constant.black),
             for: .normal
         )
         backButton.setImage(
-            UIImage(named: "Backward")?.withTintColor(UIColor(named: "YP Gray")!),
+            Constant.backward.withTintColor(Constant.gray),
             for: .highlighted
         )
+    }
+}
+
+private enum Constant {
+    static var backward: UIImage {
+        let imageName = "Backward"
+        lazy var warning = "Не определено изображение '\(imageName)'"
+        let image = UIImage(named: imageName)
+        assert(image != nil, warning)
+        guard let image
+        else {
+            print("Ошибка!!!: \(warning)")
+            return UIImage()
+        }
+        return image
+    }
+    static var black: UIColor {
+        assert(UIColor(named: "YP Black") != nil, "Не определён цвет 'YP Black'")
+        guard let color = UIColor(named: "YP Black")
+        else {
+            print("Ошибка!!!: Не определён цвет 'YP Black'")
+            return UIColor.black
+        }
+        return color
+    }
+    static var gray: UIColor {
+        assert(UIColor(named: "YP Gray") != nil, "Не определён цвет 'YP Gray'")
+        guard let color = UIColor(named: "YP Gray")
+        else {
+            print("Ошибка!!!: Не определён цвет 'YP Gray'")
+            return UIColor.gray
+        }
+        return color
     }
 }

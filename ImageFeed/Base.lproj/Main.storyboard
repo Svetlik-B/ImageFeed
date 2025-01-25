@@ -31,7 +31,7 @@
                     </view>
                     <connections>
                         <segue destination="bf6-OX-Rqr" kind="presentation" identifier="Authorize" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="Gho-N5-WT0"/>
-                        <segue destination="pfo-Jm-vKa" kind="presentation" identifier="Gallery" customClass="CustomSegue" customModule="ImageFeed" customModuleProvider="target" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="XmP-0t-1qP"/>
+                        <segue destination="pfo-Jm-vKa" kind="presentation" identifier="Gallery" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="XmP-0t-1qP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0iI-fz-6Zu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -7,13 +7,21 @@ class OAuth2Service {
 }
 
 struct OAuthTokenResponseBody: Codable {
-    var access_token: String
-    var created_at: Int?
-    var refresh_token: String?
+    var accessToken: String
+    var createdAt: Int?
+    var refreshToken: String?
     var scope: String?
-    var token_type: String?
-    var user_id: Int?
+    var tokenType: String?
+    var userId: Int?
     var username: String?
+
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case createdAt = "created_at"
+        case refreshToken = "refresh_token"
+        case tokenType = "token_type"
+        case userId = "user_id"
+    }
 }
 
 extension OAuthTokenResponseBody: CustomStringConvertible {
@@ -48,7 +56,7 @@ extension OAuth2Service {
                 do {
                     let tokenResponseBody = try JSONDecoder().decode(
                         OAuthTokenResponseBody.self, from: data)
-                    completion(.success(tokenResponseBody.access_token))
+                    completion(.success(tokenResponseBody.accessToken))
                 } catch {
                     completion(.failure(OAuthError.invalidResponse))
                 }
@@ -76,7 +84,10 @@ extension OAuth2Service {
             URLQueryItem(name: "grant_type", value: "authorization_code"),
         ]
         guard let url = urlComponents.url
-        else { return nil }
+        else {
+            print("Ошибка создания URL для авторизации")
+            return nil
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
