@@ -8,6 +8,7 @@ final class SplashViewController: UIViewController {
     let tokenStorage = OAuth2TokenStorage()
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+//        tokenStorage.token = nil
         if self.tokenStorage.token != nil {
             performSegue(
                 withIdentifier: Constants.gallerySegueIdentifier,
