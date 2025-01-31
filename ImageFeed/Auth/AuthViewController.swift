@@ -1,6 +1,6 @@
 import Foundation
-import UIKit
 import ProgressHUD
+import UIKit
 
 private let showWebViewSegueIdentifier = "ShowWebView"
 
@@ -23,6 +23,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
     ) {
+        navigationController?.popViewController(animated: true)
         ProgressHUD.animate()
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             ProgressHUD.dismiss()
@@ -31,7 +32,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self?.tokenStorage.token = token
                 self?.performSegue(withIdentifier: Constant.gallerySegueIdentifier, sender: nil)
             case .failure(let error):
-                self?.navigationController?.popViewController(animated: true)
                 print(error)
             }
         }
