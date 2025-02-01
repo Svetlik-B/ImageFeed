@@ -20,8 +20,10 @@ struct OAuthTokenResponseBody: Codable {
         case accessToken = "access_token"
         case createdAt = "created_at"
         case refreshToken = "refresh_token"
+        case scope
         case tokenType = "token_type"
         case userId = "user_id"
+        case username
     }
 }
 
