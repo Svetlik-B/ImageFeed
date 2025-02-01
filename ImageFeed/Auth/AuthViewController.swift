@@ -24,7 +24,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         didAuthenticateWithCode code: String
     ) {
         navigationController?.popViewController(animated: true)
-        ProgressHUD.animate()
+        ProgressHUD.animate(interaction: false)
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             ProgressHUD.dismiss()
             switch result {
