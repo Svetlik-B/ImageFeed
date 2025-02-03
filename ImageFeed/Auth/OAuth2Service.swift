@@ -48,7 +48,10 @@ extension OAuth2Service {
         case invalidResponse
         case invalidRequest
     }
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchOAuthToken(
+        code: String,
+        completion: @escaping (Result<String, Error>) -> Void
+    ) {
         assert(Thread.isMainThread)
 
         guard lastCode != code else {
@@ -68,6 +71,7 @@ extension OAuth2Service {
             assert(Thread.isMainThread)
             self?.task = nil
             self?.lastCode = nil
+
             switch result {
             case .success(let data):
                 do {

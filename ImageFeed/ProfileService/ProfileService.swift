@@ -1,7 +1,8 @@
 import Foundation
 
 final class ProfileService {
-
+    private var task: URLSessionTask?
+    private var lastToken: String?
 }
 
 // MARK: - Interface
@@ -15,13 +16,20 @@ extension ProfileService {
 
     enum Error: Swift.Error {
         case invalidURL
+        case invalidRequest
     }
 
     func fetchProfile(
         _ token: String,
         completion: @escaping (Result<Profile, Swift.Error>) -> Void
     ) {
-        // TODO: обработать "гонки"
+        guard lastToken != token else {
+            completion(.failure(Error.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastToken = token
+
         guard let url = URL(string: "\(Constant.baseURL)/me")
         else {
             completion(.failure(Error.invalidURL))
@@ -32,8 +40,11 @@ extension ProfileService {
             "Bearer \(token)",
             forHTTPHeaderField: "Authorization"
         )
-        let task = URLSession.shared.data(for: request) { result in
+        task = URLSession.shared.data(for: request) { [weak self] result in
             assert(Thread.isMainThread)
+            self?.task = nil
+            self?.lastToken = nil
+
             switch result {
             case .success(let data):
                 do {
@@ -47,7 +58,7 @@ extension ProfileService {
                 completion(.failure(error))
             }
         }
-        task.resume()
+        task?.resume()
     }
 }
 
@@ -71,8 +82,8 @@ extension ProfileService {
     }
 }
 
-private extension ProfileService.Profile {
-    init (from result: ProfileService.ProfileResult) {
+extension ProfileService.Profile {
+    fileprivate init(from result: ProfileService.ProfileResult) {
         self.init(
             username: result.username ?? "",
             name: "\(result.firstName ?? "") \(result.lastName ?? "")"
