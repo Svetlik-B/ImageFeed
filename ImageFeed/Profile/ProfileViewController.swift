@@ -7,13 +7,27 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+        }
+    }
 
+    @objc
+    private func buttonLogin() {}
+}
+
+// MARK: - Implementation
+extension ProfileViewController {
+    fileprivate func updateProfileDetails(profile: ProfileService.Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        textLabel.text = profile.bio
+    }
+    fileprivate func setupUI() {
         view.backgroundColor = UIColor(named: "YP Black")
-
-        // UIImage(named: "Photo")
-        let photoImageView = UIImage(named: "tab_profile_active")
+        let photoImageView = UIImage(named: "Photo")
         let imageView = UIImageView(image: photoImageView)
-        imageView.tintColor = UIColor(named: "YP Gray")
         let buttonEntrance = UIButton.systemButton(
             with: UIImage(named: "Exit") ?? UIImage(),
             target: self,
@@ -33,7 +47,7 @@ final class ProfileViewController: UIViewController {
                 equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
         ])
 
-        //        nameLabel.text = "Екатерина Новикова"
+        nameLabel.text = "Екатерина Новикова"
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = .white
         NSLayoutConstraint.activate([
@@ -41,7 +55,7 @@ final class ProfileViewController: UIViewController {
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
         ])
 
-        //        loginLabel.text = "@ekaterina_nov"
+        loginLabel.text = "@ekaterina_nov"
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.textColor = UIColor.ypGray
         NSLayoutConstraint.activate([
@@ -49,7 +63,7 @@ final class ProfileViewController: UIViewController {
             loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
         ])
 
-        //        textLabel.text = "Hello, World!"
+        textLabel.text = "Hello, World!"
         textLabel.numberOfLines = 0
         textLabel.font = UIFont.systemFont(ofSize: 13)
         textLabel.textColor = .white
@@ -69,6 +83,4 @@ final class ProfileViewController: UIViewController {
         ])
     }
 
-    @objc
-    private func buttonLogin() {}
 }

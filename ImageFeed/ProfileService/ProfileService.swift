@@ -2,6 +2,8 @@ import Foundation
 
 final class ProfileService {
     static var shared = ProfileService()
+    private(set) var profile: Profile?
+
     private init() {}
     private var task: URLSessionTask?
     private var lastToken: String?
@@ -52,12 +54,17 @@ extension ProfileService {
                 do {
                     let profileResult = try JSONDecoder()
                         .decode(ProfileResult.self, from: data)
-                    completion(.success(Profile(from: profileResult)))
+                    let profile = Profile(from: profileResult)
+                    self?.profile = profile
+                    completion(.success(profile))
+                    return
                 } catch {
                     completion(.failure(error))
+                    return
                 }
             case .failure(let error):
                 completion(.failure(error))
+                return
             }
         }
         task?.resume()
