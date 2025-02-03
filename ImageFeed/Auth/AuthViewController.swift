@@ -10,7 +10,6 @@ protocol AuthViewControllerDelegate: NSObject {
 
 final class AuthViewController: UIViewController {
     var delegate: AuthViewControllerDelegate?
-    var tokenStorage = OAuth2TokenStorage()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
             if let vc = segue.destination as? WebViewViewController {
@@ -31,7 +30,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             guard let self else { return }
             switch result {
             case .success(let token):
-                self.tokenStorage.token = token
+                OAuth2TokenStorage.shared.token = token
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 ProgressHUD.dismiss()

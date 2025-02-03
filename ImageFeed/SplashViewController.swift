@@ -2,14 +2,13 @@ import ProgressHUD
 import UIKit
 
 final class SplashViewController: UIViewController {
-    let tokenStorage = OAuth2TokenStorage()
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        tokenStorage.token = nil
 //    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let token = self.tokenStorage.token {
+        if let token = OAuth2TokenStorage.shared.token {
             fetchProfile(token: token)
         } else {
             performSegue(

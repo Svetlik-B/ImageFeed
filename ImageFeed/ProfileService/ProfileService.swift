@@ -1,7 +1,7 @@
 import Foundation
 
 final class ProfileService {
-    static var shared = ProfileService()
+    static let shared = ProfileService()
     private(set) var profile: Profile?
 
     private init() {}
