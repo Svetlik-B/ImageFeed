@@ -34,7 +34,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 ProgressHUD.dismiss()
-                Logger.error(error.localizedDescription)
+                Logger.shared.error(error.localizedDescription)
             }
         }
     }

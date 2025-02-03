@@ -25,7 +25,7 @@ final class SplashViewController: UIViewController {
             {
                 authViewController.delegate = self
             } else {
-                Logger.error("не найден контроллер авторизации")
+                Logger.shared.error("не найден контроллер авторизации")
             }
         }
     }
@@ -56,7 +56,7 @@ extension SplashViewController {
                 self.switchToTabBarController()
 
             case .failure(let error):
-                Logger.error(error.localizedDescription)
+                Logger.shared.error(error.localizedDescription)
             }
         }
     }

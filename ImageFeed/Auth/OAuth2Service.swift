@@ -106,7 +106,7 @@ extension OAuth2Service {
         ]
         guard let url = urlComponents.url
         else {
-            Logger.error("плохой URL для авторизации")
+            Logger.shared.error("плохой URL для авторизации")
             return nil
         }
         var request = URLRequest(url: url)

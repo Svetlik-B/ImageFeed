@@ -1,7 +1,13 @@
 import os
 
-enum Logger {
-    static func error(_ message: String) {
+final class Logger {
+    private init() {}
+}
+
+// MARK: - Interface
+extension Logger {
+    static let shared = Logger()
+    func error(_ message: String) {
         os_log("%{public}@", type: .error, message)
     }
 }

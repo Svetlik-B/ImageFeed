@@ -103,7 +103,7 @@ extension WebViewViewController {
     fileprivate func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString)
         else {
-            Logger.error("невозможно создать URLComponents")
+            Logger.shared.error("невозможно создать URLComponents")
             return
         }
         urlComponents.queryItems = [
@@ -114,7 +114,7 @@ extension WebViewViewController {
         ]
         guard let url = urlComponents.url
         else {
-            Logger.error("невозможно создать URL")
+            Logger.shared.error("невозможно создать URL")
             return
         }
         let request = URLRequest(url: url)
@@ -145,7 +145,7 @@ private enum Constant {
         assert(image != nil, warning)
         guard let image
         else {
-            Logger.error(warning)
+            Logger.shared.error(warning)
             return UIImage()
         }
         return image
@@ -154,7 +154,7 @@ private enum Constant {
         assert(UIColor(named: "YP Black") != nil, "Не определён цвет 'YP Black'")
         guard let color = UIColor(named: "YP Black")
         else {
-            Logger.error("Не определён цвет 'YP Black'")
+            Logger.shared.error("Не определён цвет 'YP Black'")
             return UIColor.black
         }
         return color
@@ -163,7 +163,7 @@ private enum Constant {
         assert(UIColor(named: "YP Gray") != nil, "Не определён цвет 'YP Gray'")
         guard let color = UIColor(named: "YP Gray")
         else {
-            Logger.error("Не определён цвет 'YP Gray'")
+            Logger.shared.error("Не определён цвет 'YP Gray'")
             return UIColor.gray
         }
         return color
