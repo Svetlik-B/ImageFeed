@@ -3,7 +3,6 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     let tokenStorage = OAuth2TokenStorage()
-    let profileService = ProfileService()
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        tokenStorage.token = nil
@@ -48,7 +47,7 @@ extension SplashViewController {
     }
     private func fetchProfile(token: String) {
         ProgressHUD.animate(interaction: false)
-        profileService.fetchProfile(token) { [weak self] result in
+        ProfileService.shared.fetchProfile(token) { [weak self] result in
             ProgressHUD.dismiss()
 
             guard let self = self else { return }

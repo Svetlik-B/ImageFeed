@@ -1,6 +1,8 @@
 import Foundation
 
 final class ProfileService {
+    static var shared = ProfileService()
+    private init() {}
     private var task: URLSessionTask?
     private var lastToken: String?
 }
