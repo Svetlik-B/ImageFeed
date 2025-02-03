@@ -181,9 +181,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="N1V-MD-gx9"/>
-                    <connections>
-                        <segue destination="pfo-Jm-vKa" kind="presentation" identifier="Gallery" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="sSh-gP-7ew"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="82Z-Ne-kfO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -401,9 +398,6 @@
             <point key="canvasLocation" x="-1464" y="-1663"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="sSh-gP-7ew"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="0.jpg" width="1600" height="1059"/>
         <image name="Backward" width="24" height="24"/>

@@ -4,7 +4,12 @@ import UIKit
 
 private let showWebViewSegueIdentifier = "ShowWebView"
 
+protocol AuthViewControllerDelegate: NSObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
+    var delegate: AuthViewControllerDelegate?
     var tokenStorage = OAuth2TokenStorage()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
@@ -16,9 +21,6 @@ final class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    enum Constant {
-        static let gallerySegueIdentifier = "Gallery"
-    }
     func webViewViewController(
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
@@ -26,13 +28,14 @@ extension AuthViewController: WebViewViewControllerDelegate {
         navigationController?.popViewController(animated: true)
         ProgressHUD.animate(interaction: false)
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
-            ProgressHUD.dismiss()
+            guard let self else { return }
             switch result {
             case .success(let token):
-                self?.tokenStorage.token = token
-                self?.performSegue(withIdentifier: Constant.gallerySegueIdentifier, sender: nil)
+                self.tokenStorage.token = token
+                self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                print(error)
+                ProgressHUD.dismiss()
+                Logger.error(error.localizedDescription)
             }
         }
     }

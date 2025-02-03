@@ -8,23 +8,6 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let token = OAuth2TokenStorage().token {
-            let profileService = ProfileService()
-            profileService.fetchProfile(token) { [weak self] result in
-                assert(Thread.isMainThread)
-                switch result {
-                case .success(let profile):
-                    self?.nameLabel.text = profile.name
-                    self?.loginLabel.text = profile.loginName
-                    self?.textLabel.text = profile.bio
-                case .failure(let error):
-                    print("ОШИБКА!!!: \(error)")
-                }
-            }
-        } else {
-            print("ОШИБКА!!!: нет токенa")
-        }
-
         view.backgroundColor = UIColor(named: "YP Black")
 
         // UIImage(named: "Photo")

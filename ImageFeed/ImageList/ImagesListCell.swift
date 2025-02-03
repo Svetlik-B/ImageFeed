@@ -24,7 +24,7 @@ private enum Constant {
         assert(UIColor(named: "YP Black 0") != nil, "Не определён цвет 'YP Black 0'")
         guard let color = UIColor(named: "YP Black 0")?.cgColor
         else {
-            print("Ошибка!!!: Не определён цвет 'YP Black 0'")
+            Logger.error("не определён цвет 'YP Black 0'")
             return UIColor.clear.cgColor
         }
         return color
@@ -33,7 +33,7 @@ private enum Constant {
         assert(UIColor(named: "YP Black 0") != nil, "Не определён цвет 'YP Black 20'")
         guard let color = UIColor(named: "YP Black 20")?.cgColor
         else {
-            print("Ошибка!!!: Не определён цвет 'YP Black 20'")
+            Logger.error("не определён цвет 'YP Black 20'")
             return UIColor(white: 0, alpha: 20).cgColor
         }
         return color
