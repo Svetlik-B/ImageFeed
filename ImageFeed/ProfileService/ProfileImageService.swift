@@ -1,10 +1,9 @@
 import Foundation
 
-final class ProfileImageService {
-    private(set) var imageURL: URL?
-    private init() {}
+final class ProfileImageService: NSObject {
+    @objc private(set) var imageURL: URL?
     private var task: URLSessionTask?
-    private var lastUsername: String?
+    private(set) var lastUsername: String?
 }
 
 // MARK: - Interface

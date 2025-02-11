@@ -1,12 +1,19 @@
+import Combine
 import UIKit
 
 final class ProfileViewController: UIViewController {
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
     private let textLabel = UILabel()
+    private let imageView = UIImageView()
+    private var cancellable: Cancellable?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        cancellable = ProfileImageService.shared
+            .publisher(for: \.imageURL).sink { imageURL in
+                print("Got image url: '\(imageURL?.absoluteString ?? "<none>")'")
+            }
         setupUI()
         if let profile = ProfileService.shared.profile {
             updateProfileDetails(profile: profile)
@@ -26,8 +33,7 @@ extension ProfileViewController {
     }
     fileprivate func setupUI() {
         view.backgroundColor = UIColor(named: "YP Black")
-        let photoImageView = UIImage(named: "Photo")
-        let imageView = UIImageView(image: photoImageView)
+        imageView.image = UIImage(named: "Photo")
         let buttonEntrance = UIButton.systemButton(
             with: UIImage(named: "Exit") ?? UIImage(),
             target: self,

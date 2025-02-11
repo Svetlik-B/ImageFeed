@@ -2,10 +2,6 @@ import ProgressHUD
 import UIKit
 
 final class SplashViewController: UIViewController {
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        tokenStorage.token = nil
-//    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let token = OAuth2TokenStorage.shared.token {
@@ -52,7 +48,13 @@ extension SplashViewController {
             guard let self = self else { return }
 
             switch result {
-            case .success:
+            case .success(let profile):
+                ProfileImageService.shared
+                    .fetchProfileImageURL(username: profile.username) { result in
+                        if case .failure(let failure) = result {
+                            Logger.shared.error(failure.localizedDescription)
+                        }
+                    }
                 self.switchToTabBarController()
 
             case .failure(let error):
