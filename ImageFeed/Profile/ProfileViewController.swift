@@ -1,4 +1,5 @@
 import Combine
+import Kingfisher
 import UIKit
 
 final class ProfileViewController: UIViewController {
@@ -12,7 +13,15 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         cancellable = ProfileImageService.shared
             .publisher(for: \.imageURL).sink { imageURL in
-                print("Got image url: '\(imageURL?.absoluteString ?? "<none>")'")
+                guard let imageURL = imageURL else { return }
+                DispatchQueue.main.async {
+                    let processor = RoundCornerImageProcessor(cornerRadius: 20)
+                    self.imageView.kf.setImage(
+                        with: imageURL,
+                        placeholder: UIImage(systemName: "inset.filled.rectangle.and.person.filled"),
+                        options: [.processor(processor), .forceRefresh]
+                    )
+                }
             }
         setupUI()
         if let profile = ProfileService.shared.profile {
@@ -26,6 +35,9 @@ final class ProfileViewController: UIViewController {
 
 // MARK: - Implementation
 extension ProfileViewController {
+    fileprivate enum Constant {
+        static let imageDiameter: CGFloat = 70
+    }
     fileprivate func updateProfileDetails(profile: ProfileService.Profile) {
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
@@ -33,6 +45,8 @@ extension ProfileViewController {
     }
     fileprivate func setupUI() {
         view.backgroundColor = UIColor(named: "YP Black")
+//        imageView.layer.cornerRadius = Constant.imageDiameter / 2
+//        imageView.clipsToBounds = true
         imageView.image = UIImage(named: "Photo")
         let buttonEntrance = UIButton.systemButton(
             with: UIImage(named: "Exit") ?? UIImage(),
@@ -45,7 +59,7 @@ extension ProfileViewController {
         }
 
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.widthAnchor.constraint(equalToConstant: Constant.imageDiameter),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
             imageView.leadingAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
