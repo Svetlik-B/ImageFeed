@@ -18,7 +18,7 @@ final class ProfileViewController: UIViewController {
                     let processor = RoundCornerImageProcessor(cornerRadius: 20)
                     self.imageView.kf.setImage(
                         with: imageURL,
-                        placeholder: UIImage(systemName: "inset.filled.rectangle.and.person.filled"),
+                        placeholder: UIImage(named: "tab_profile_active"),
                         options: [.processor(processor), .forceRefresh]
                     )
                 }
@@ -45,9 +45,7 @@ extension ProfileViewController {
     }
     fileprivate func setupUI() {
         view.backgroundColor = UIColor(named: "YP Black")
-//        imageView.layer.cornerRadius = Constant.imageDiameter / 2
-//        imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "Photo")
+        imageView.tintColor = .gray
         let buttonEntrance = UIButton.systemButton(
             with: UIImage(named: "Exit") ?? UIImage(),
             target: self,

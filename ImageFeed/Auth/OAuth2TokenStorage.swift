@@ -11,6 +11,12 @@ extension OAuth2TokenStorage {
     static let shared = OAuth2TokenStorage()
     var token: String? {
         get { KeychainWrapper.standard.string(forKey: key) }
-        set { KeychainWrapper.standard.set(newValue!, forKey: key) }
+        set {
+            guard let newValue else {
+                KeychainWrapper.standard.removeObject(forKey: key)
+                return
+            }
+            KeychainWrapper.standard.set(newValue, forKey: key)
+        }
     }
 }
