@@ -72,7 +72,10 @@ extension SplashViewController {
         }
     }
     private func switchToTabBarController() {
-        let tabBarController = TabBarController()
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        let tabBarController = storyboard.instantiateViewController(
+            withIdentifier: "TabBarController"
+        )
         tabBarController.modalPresentationStyle = .fullScreen
         present(tabBarController, animated: false)
     }
