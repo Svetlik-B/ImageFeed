@@ -1,4 +1,3 @@
-import Combine
 import Kingfisher
 import UIKit
 
@@ -7,22 +6,26 @@ final class ProfileViewController: UIViewController {
     private let loginLabel = UILabel()
     private let textLabel = UILabel()
     private let imageView = UIImageView()
-    private var cancellable: Cancellable?
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        addObserver()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        addObserver()
+    }
+
+    deinit {
+        removeObserver()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        cancellable = ProfileImageService.shared
-            .publisher(for: \.imageURL).sink { imageURL in
-                guard let imageURL = imageURL else { return }
-                DispatchQueue.main.async {
-                    let processor = RoundCornerImageProcessor(cornerRadius: 20)
-                    self.imageView.kf.setImage(
-                        with: imageURL,
-                        placeholder: UIImage(named: "tab_profile_active"),
-                        options: [.processor(processor), .forceRefresh]
-                    )
-                }
-            }
+        if let avatarURL = ProfileImageService.shared.imageURL {
+            updateAvatar(avatarURL)
+        }
         setupUI()
         if let profile = ProfileService.shared.profile {
             updateProfileDetails(profile: profile)
@@ -31,6 +34,17 @@ final class ProfileViewController: UIViewController {
 
     @objc
     private func buttonLogin() {}
+
+    @objc fileprivate func updateAvatar(notification: Notification) {
+        guard
+            isViewLoaded,
+            let userInfo = notification.userInfo,
+            let profileImageURL = userInfo["URL"] as? URL
+        else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.updateAvatar(profileImageURL)
+        }
+    }
 }
 
 // MARK: - Implementation
@@ -38,10 +52,33 @@ extension ProfileViewController {
     fileprivate enum Constant {
         static let imageDiameter: CGFloat = 70
     }
+    fileprivate func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateAvatar(notification:)),
+            name: ProfileImageService.didChangeNotification,
+            object: nil
+        )
+    }
+    fileprivate func removeObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: ProfileImageService.didChangeNotification,
+            object: nil
+        )
+    }
     fileprivate func updateProfileDetails(profile: ProfileService.Profile) {
         nameLabel.text = profile.name
         loginLabel.text = profile.loginName
         textLabel.text = profile.bio
+    }
+    fileprivate func updateAvatar(_ avatarURL: URL) {
+        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        self.imageView.kf.setImage(
+            with: avatarURL,
+            placeholder: UIImage(named: "tab_profile_active"),
+            options: [.processor(processor), .forceRefresh]
+        )
     }
     fileprivate func setupUI() {
         view.backgroundColor = UIColor(named: "YP Black")

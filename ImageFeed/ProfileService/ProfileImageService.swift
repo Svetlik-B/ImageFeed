@@ -1,14 +1,27 @@
 import Foundation
 
-final class ProfileImageService: NSObject {
-    @objc private(set) var imageURL: URL?
+final class ProfileImageService {
+    private(set) var imageURL: URL? {
+        didSet {
+            if oldValue != imageURL {
+                NotificationCenter.default.post(
+                    name: ProfileImageService.didChangeNotification,
+                    object: self,
+                    userInfo: ["URL": imageURL as Any]
+                )
+            }
+        }
+    }
     private var task: URLSessionTask?
     private(set) var lastUsername: String?
-    private override init() {}
+    private init() {}
 }
 
 // MARK: - Interface
 extension ProfileImageService {
+    static let didChangeNotification = Notification.Name(
+        rawValue: "ProfileImageProviderDidChange"
+    )
     static let shared = ProfileImageService()
     enum Error: Swift.Error {
         case invalidURL
