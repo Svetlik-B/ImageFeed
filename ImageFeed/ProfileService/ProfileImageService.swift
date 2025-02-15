@@ -4,6 +4,7 @@ final class ProfileImageService: NSObject {
     @objc private(set) var imageURL: URL?
     private var task: URLSessionTask?
     private(set) var lastUsername: String?
+    private override init() {}
 }
 
 // MARK: - Interface
