@@ -1,5 +1,4 @@
 import Foundation
-import ProgressHUD
 import UIKit
 
 private let showWebViewSegueIdentifier = "ShowWebView"
@@ -25,7 +24,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         didAuthenticateWithCode code: String
     ) {
         navigationController?.popViewController(animated: true)
-        ProgressHUD.animate(interaction: false)
+        UIBlockingProgressHUD.show()
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             guard let self else { return }
             switch result {
@@ -33,7 +32,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 OAuth2TokenStorage.shared.token = token
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                ProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
                 Logger.shared.error(error.localizedDescription)
                 let allert = UIAlertController(
                     title: "Что-то пошло не так(",

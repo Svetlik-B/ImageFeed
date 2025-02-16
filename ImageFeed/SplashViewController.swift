@@ -1,4 +1,3 @@
-import ProgressHUD
 import UIKit
 
 final class SplashViewController: UIViewController {
@@ -50,9 +49,9 @@ extension SplashViewController {
         static let gallerySegueIdentifier = "Gallery"
     }
     private func fetchProfile(token: String) {
-        ProgressHUD.animate(interaction: false)
+        UIBlockingProgressHUD.show()
         ProfileService.shared.fetchProfile(token) { [weak self] result in
-            ProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
 
             guard let self = self else { return }
 
