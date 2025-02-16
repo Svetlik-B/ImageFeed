@@ -29,7 +29,6 @@ final class SplashViewController: UIViewController {
             } else {
                 Logger.shared.error("не найден контроллер авторизации")
             }
-            (authViewController as? AuthViewController)?.delegate = self
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: false)
         }
