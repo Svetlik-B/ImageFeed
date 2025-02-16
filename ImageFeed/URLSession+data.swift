@@ -12,6 +12,9 @@ extension URLSession {
         completion: @escaping (Result<Data, Error>) -> Void
     ) -> URLSessionTask {
         func fulfillCompletionOnTheMainThread(_ result: Result<Data, Error>) {
+            if case .failure(let failure) = result {
+                Logger.shared.error("\(failure)")
+            }
             DispatchQueue.main.async {
                 completion(result)
             }
