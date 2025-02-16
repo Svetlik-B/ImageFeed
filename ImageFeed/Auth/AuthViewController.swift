@@ -35,6 +35,13 @@ extension AuthViewController: WebViewViewControllerDelegate {
             case .failure(let error):
                 ProgressHUD.dismiss()
                 Logger.shared.error(error.localizedDescription)
+                let allert = UIAlertController(
+                    title: "Что-то пошло не так(",
+                    message: "Не удалось войти в систему",
+                    preferredStyle: .alert
+                )
+                allert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(allert, animated: true)
             }
         }
     }
