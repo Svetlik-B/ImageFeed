@@ -331,7 +331,13 @@
                             <constraint firstItem="BsG-jU-EPN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yzG-zh-8gm"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="q9i-ui-SUd"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_profile_no_active " selectedImage="tab_editorial_active" id="q9i-ui-SUd">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="imageRenderingMode">
+                                <integer key="value" value="2"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="WkU-Ye-Sjb"/>
                     <connections>
                         <outlet property="tableView" destination="BsG-jU-EPN" id="5h5-sh-OGG"/>
@@ -352,6 +358,7 @@
         <image name="share_button" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
+        <image name="tab_profile_no_active " width="30" height="30"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
