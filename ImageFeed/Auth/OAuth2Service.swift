@@ -3,7 +3,8 @@ import Foundation
 class OAuth2Service {
     static var shared = OAuth2Service()
     private init() {}
-    private var tokenResponseBody: OAuthTokenResponseBody?
+    private var task: URLSessionTask?
+    private var lastCode: String?
 }
 
 struct OAuthTokenResponseBody: Codable {
@@ -19,8 +20,10 @@ struct OAuthTokenResponseBody: Codable {
         case accessToken = "access_token"
         case createdAt = "created_at"
         case refreshToken = "refresh_token"
+        case scope
         case tokenType = "token_type"
         case userId = "user_id"
+        case username
     }
 }
 
@@ -43,14 +46,32 @@ extension OAuth2Service {
     enum OAuthError: Error {
         case invalidCode
         case invalidResponse
+        case invalidRequest
     }
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchOAuthToken(
+        code: String,
+        completion: @escaping (Result<String, Error>) -> Void
+    ) {
+        assert(Thread.isMainThread)
+
+        guard lastCode != code else {
+            completion(.failure(OAuthError.invalidRequest))
+            return
+        }
+
+        task?.cancel()
+        lastCode = code
+
         guard let urlRequest = makeOAuthTokenRequest(code: code)
         else {
             completion(.failure(OAuthError.invalidCode))
             return
         }
-        let dataTask = URLSession.shared.data(for: urlRequest) { result in
+        task = URLSession.shared.data(for: urlRequest) { [weak self] result in
+            assert(Thread.isMainThread)
+            self?.task = nil
+            self?.lastCode = nil
+
             switch result {
             case .success(let data):
                 do {
@@ -64,7 +85,7 @@ extension OAuth2Service {
                 completion(.failure(error))
             }
         }
-        dataTask.resume()
+        task?.resume()
     }
 }
 
@@ -85,7 +106,7 @@ extension OAuth2Service {
         ]
         guard let url = urlComponents.url
         else {
-            print("Ошибка создания URL для авторизации")
+            Logger.shared.error("плохой URL для авторизации")
             return nil
         }
         var request = URLRequest(url: url)

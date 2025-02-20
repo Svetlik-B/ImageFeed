@@ -3,8 +3,12 @@ import UIKit
 
 private let showWebViewSegueIdentifier = "ShowWebView"
 
+protocol AuthViewControllerDelegate: NSObject {
+    func didAuthenticate(_ vc: AuthViewController)
+}
+
 final class AuthViewController: UIViewController {
-    var tokenStorage = OAuth2TokenStorage()
+    var delegate: AuthViewControllerDelegate?
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
             if let vc = segue.destination as? WebViewViewController {
@@ -15,21 +19,28 @@ final class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    enum Constant {
-        static let gallerySegueIdentifier = "Gallery"
-    }
     func webViewViewController(
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String
     ) {
+        navigationController?.popViewController(animated: true)
+        UIBlockingProgressHUD.show()
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let token):
-                self?.tokenStorage.token = token
-                self?.performSegue(withIdentifier: Constant.gallerySegueIdentifier, sender: nil)
+                OAuth2TokenStorage.shared.token = token
+                self.delegate?.didAuthenticate(self)
             case .failure(let error):
-                self?.navigationController?.popViewController(animated: true)
-                print(error)
+                UIBlockingProgressHUD.dismiss()
+                Logger.shared.error(error.localizedDescription)
+                let allert = UIAlertController(
+                    title: "Что-то пошло не так(",
+                    message: "Не удалось войти в систему",
+                    preferredStyle: .alert
+                )
+                allert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(allert, animated: true)
             }
         }
     }
