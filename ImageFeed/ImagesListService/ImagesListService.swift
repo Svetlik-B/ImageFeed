@@ -125,13 +125,17 @@ extension ImagesListService {
         }
         var photo: Photo {
             get throws {
-                guard let thumbImageURL = urls?["thumb"]
+                guard
+                    let thumbImage = urls?["thumb"],
+                    let thumbImageURL = URL(string: thumbImage)
                 else {
                     Logger.shared
                         .error(#"Отсутствует картинка размера "thumb""#)
                     throw Error.missingThumbImageURL
                 }
-                guard let largeImageURL = urls?["regular"]
+                guard
+                    let largeImage = urls?["regular"],
+                    let largeImageURL = URL(string: largeImage)
                 else {
                     Logger.shared
                         .error(#"Отсутствует картинка размера "regular""#)

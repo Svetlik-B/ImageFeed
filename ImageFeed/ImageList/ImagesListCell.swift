@@ -17,6 +17,10 @@ class ImagesListCell: UITableViewCell {
         self.gradient.colors = [Constant.black0, Constant.black20]
         self.gradientView.layer.insertSublayer(self.gradient, at: 0)
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.photo.kf.cancelDownloadTask()
+    }
 }
 
 private enum Constant {

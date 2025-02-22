@@ -5,7 +5,7 @@ struct Photo {
     var size: CGSize
     var createdAt: Date?
     var welcomeDescription: String?
-    var thumbImageURL: String
-    var largeImageURL: String
+    var thumbImageURL: URL
+    var largeImageURL: URL
     var isLiked: Bool
 }

@@ -1,13 +1,22 @@
+//import Kingfisher
 import UIKit
 
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    private var photos: [Photo] = []
+    private var imagesListService = ImagesListService()
 
     @IBOutlet private var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        addObserver()
+        imagesListService.fetchPhotosNextPage()
+    }
+    
+    deinit {
+        removeObserver()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -29,7 +38,7 @@ final class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Constants.numberOfImages
+        return photos.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -52,33 +61,73 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = self.imageForIndexPath(indexPath)
-        else { return 0 }
-
-        return tableView.bounds.width * image.size.height / image.size.width
+        let photo = photos[indexPath.row]
+        return tableView.bounds.width * photo.size.height / photo.size.width
     }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(
-            withIdentifier: showSingleImageSegueIdentifier,
-            sender: imageForIndexPath(indexPath)
-        )
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == photos.count - 1 {
+            imagesListService.fetchPhotosNextPage()
+        }
     }
+    //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //        performSegue(
+    //            withIdentifier: showSingleImageSegueIdentifier,
+    //            sender: imageForIndexPath(indexPath)
+    //        )
+    //    }
 }
 
+// MARK: - Implementation
 extension ImagesListViewController {
     fileprivate func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         cell.gradient.frame.size.width = tableView.bounds.width
-        cell.photo.image = self.imageForIndexPath(indexPath)
-        cell.label.text = dateFormatter.string(from: Date())
+        let photo = photos[indexPath.row]
+        cell.photo.kf.setImage(
+            with: photo.thumbImageURL,
+            placeholder: UIImage(named: "Stub")
+        )
+        cell.photo.kf.indicatorType = .activity
+        cell.photo.backgroundColor = UIColor(named: "YP Black")
+        if let date = photo.createdAt {
+            cell.label.text = dateFormatter.string(from: date)
+        } else {
+            cell.label.text = nil
+        }
         cell.likeButton.setImage(
-            indexPath.row % 2 == 0
+            photo.isLiked
                 ? UIImage(named: "Active")
                 : UIImage(named: "No Active"),
             for: .normal
         )
     }
-    fileprivate func imageForIndexPath(_ indexPath: IndexPath) -> UIImage? {
-        UIImage(named: "\(indexPath.row).jpg")
+    @objc fileprivate func updateTableViewAnimated() {
+        let oldCount = photos.count
+        let newCount = imagesListService.photos.count
+        photos = imagesListService.photos
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in
+            }
+        }
+    }
+    fileprivate func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTableViewAnimated),
+            name: ImagesListService.didChangeNotification,
+            object: nil
+        )
+    }
+    fileprivate func removeObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: ImagesListService.didChangeNotification,
+            object: nil
+        )
     }
 }
 
