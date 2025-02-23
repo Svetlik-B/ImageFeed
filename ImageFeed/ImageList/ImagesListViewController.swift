@@ -14,7 +14,7 @@ final class ImagesListViewController: UIViewController {
         addObserver()
         imagesListService.fetchPhotosNextPage()
     }
-    
+
     deinit {
         removeObserver()
     }
@@ -34,8 +34,28 @@ final class ImagesListViewController: UIViewController {
         viewController.image = sender as? UIImage
     }
 }
-// MARK: - UITableViewDataSource
 
+// MARK: - ImagesListCellDelegate
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        imagesListService.changeLike(
+            photoId: photo.id,
+            isLike: !photo.isLiked
+        ) { [weak self] result in
+            switch result {
+            case .success:
+                self?.toggleIsLiked(for: photo.id)
+                cell.setIsLiked(value: !photo.isLiked)
+            case .failure(let error):
+                Logger.shared.error("Не удалось поменять Like: \(error)")
+            }
+        }
+    }
+}
+
+// MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count
@@ -64,7 +84,9 @@ extension ImagesListViewController: UITableViewDelegate {
         let photo = photos[indexPath.row]
         return tableView.bounds.width * photo.size.height / photo.size.width
     }
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath
+    ) {
         if indexPath.row == photos.count - 1 {
             imagesListService.fetchPhotosNextPage()
         }
@@ -79,6 +101,11 @@ extension ImagesListViewController: UITableViewDelegate {
 
 // MARK: - Implementation
 extension ImagesListViewController {
+    fileprivate func toggleIsLiked(for photoId: String) {
+        if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+            photos[keyPath: \.[index].isLiked].toggle()
+        }
+    }
     fileprivate func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         cell.gradient.frame.size.width = tableView.bounds.width
         let photo = photos[indexPath.row]
@@ -93,12 +120,8 @@ extension ImagesListViewController {
         } else {
             cell.label.text = nil
         }
-        cell.likeButton.setImage(
-            photo.isLiked
-                ? UIImage(named: "Active")
-                : UIImage(named: "No Active"),
-            for: .normal
-        )
+        cell.setIsLiked(value: photo.isLiked)
+        cell.delegate = self
     }
     @objc fileprivate func updateTableViewAnimated() {
         let oldCount = photos.count

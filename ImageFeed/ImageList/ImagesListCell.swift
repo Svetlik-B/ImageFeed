@@ -1,12 +1,22 @@
 import UIKit
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
+    weak var delegate: ImagesListCellDelegate?
     @IBOutlet weak var photo: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var gradientView: UIView!
+    
+    @IBAction func likeButtonClicked(_ sender: UIButton) {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
     private(set) var gradient: CAGradientLayer!
     
     override func awakeFromNib() {
@@ -20,6 +30,13 @@ class ImagesListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.photo.kf.cancelDownloadTask()
+    }
+    
+    func setIsLiked(value: Bool) {
+        likeButton.setImage(
+            UIImage(named: value ? "Active" : "No Active"),
+            for: .normal
+        )
     }
 }
 

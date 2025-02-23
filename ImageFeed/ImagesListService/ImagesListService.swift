@@ -20,8 +20,9 @@ extension ImagesListService {
         isLike: Bool,
         _ completion: @escaping (Result<Void, Error>) -> Void
     ) {
+        print(#function, photoId, isLike)
         //создать url string  /photos/:id/like
-        let urlString = "/photos/\(photoId)/like"
+        let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
         //сделать из него url
         guard let url = URL(string: urlString)
         else {
