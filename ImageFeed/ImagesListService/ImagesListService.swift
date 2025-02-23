@@ -10,6 +10,50 @@ extension ImagesListService {
     static let didChangeNotification = Notification.Name(
         rawValue: "ImagesListServiceDidChange"
     )
+    enum ImagesListServiceError: Error {
+        case badChangeLikeUrl
+        case noToken
+    }
+    
+    func changeLike(
+        photoId: String,
+        isLike: Bool,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        //создать url string  /photos/:id/like
+        let urlString = "/photos/\(photoId)/like"
+        //сделать из него url
+        guard let url = URL(string: urlString)
+        else {
+            Logger.shared.error("changeLike: Ошибка создания URL")
+            completion(.failure(ImagesListServiceError.badChangeLikeUrl))
+            return
+        }
+        //сделать url request (isLike true - POST, isLike false - DELETE
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        guard let token = OAuth2TokenStorage.shared.token
+        else {
+            Logger.shared.error("changeLike: Отсутствует токен")
+            completion(.failure(ImagesListServiceError.noToken))
+            return
+        }
+        request.setValue(
+            "Bearer \(token)",
+            forHTTPHeaderField: "Authorization"
+        )
+        //запустить task
+        URLSession.shared.data(for: request) { result in
+            //обработать ответ
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }.resume()
+        
+    }
     func fetchPhotosNextPage() {
         guard task == nil
         else {
@@ -39,10 +83,6 @@ extension ImagesListService {
 extension ImagesListService {
     fileprivate enum Constant {
         static let perPage: Int = 10
-    }
-
-    fileprivate enum Error: Swift.Error {
-        case invalidURL
     }
 
     fileprivate var urlRequest: URLRequest? {
@@ -119,7 +159,7 @@ extension ImagesListService {
             case isLiked = "liked_by_user"
         }
 
-        enum Error: Swift.Error {
+        enum ResponseError: Error {
             case missingThumbImageURL
             case missingLargeImageURL
         }
@@ -131,7 +171,7 @@ extension ImagesListService {
                 else {
                     Logger.shared
                         .error(#"Отсутствует картинка размера "thumb""#)
-                    throw Error.missingThumbImageURL
+                    throw ResponseError.missingThumbImageURL
                 }
                 guard
                     let largeImage = urls?["regular"],
@@ -139,7 +179,7 @@ extension ImagesListService {
                 else {
                     Logger.shared
                         .error(#"Отсутствует картинка размера "regular""#)
-                    throw Error.missingLargeImageURL
+                    throw ResponseError.missingLargeImageURL
                 }
                 let isoFormatter = ISO8601DateFormatter()
                 let date: Date? =
