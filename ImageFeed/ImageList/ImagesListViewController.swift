@@ -1,4 +1,3 @@
-//import Kingfisher
 import UIKit
 
 final class ImagesListViewController: UIViewController {
@@ -28,10 +27,14 @@ final class ImagesListViewController: UIViewController {
 
         guard let viewController = segue.destination as? SingleImageViewController
         else {
-            assertionFailure("Invalid segue destination")
+            Logger.shared.error("Invalid segue destination")
             return
         }
-        viewController.image = sender as? UIImage
+        guard let photo = sender as? Photo else {
+            Logger.shared.error("нет фото")
+            return
+        }
+        viewController.photo = photo
     }
 }
 
@@ -93,12 +96,12 @@ extension ImagesListViewController: UITableViewDelegate {
             imagesListService.fetchPhotosNextPage()
         }
     }
-    //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //        performSegue(
-    //            withIdentifier: showSingleImageSegueIdentifier,
-    //            sender: imageForIndexPath(indexPath)
-    //        )
-    //    }
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            performSegue(
+                withIdentifier: showSingleImageSegueIdentifier,
+                sender: photos[indexPath.row]
+            )
+        }
 }
 
 // MARK: - Implementation

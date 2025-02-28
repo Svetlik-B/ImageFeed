@@ -175,11 +175,11 @@ extension ImagesListService {
                     throw ResponseError.missingThumbImageURL
                 }
                 guard
-                    let largeImage = urls?["regular"],
-                    let largeImageURL = URL(string: largeImage)
+                    let fullImage = urls?["full"],
+                    let fullImageURL = URL(string: fullImage)
                 else {
                     Logger.shared
-                        .error(#"Отсутствует картинка размера "regular""#)
+                        .error(#"Отсутствует картинка размера "full""#)
                     throw ResponseError.missingLargeImageURL
                 }
                 let isoFormatter = ISO8601DateFormatter()
@@ -195,7 +195,7 @@ extension ImagesListService {
                     createdAt: date,
                     welcomeDescription: welcomeDescription,
                     thumbImageURL: thumbImageURL,
-                    largeImageURL: largeImageURL,
+                    largeImageURL: fullImageURL,
                     isLiked: isLiked
                 )
             }
