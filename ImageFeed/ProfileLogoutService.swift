@@ -8,6 +8,8 @@ final class ProfileLogoutService {
 
     func logout() {
         cleanCookies()
+        ProfileService.shared.profile = nil
+        OAuth2TokenStorage.shared.token = nil
     }
 
     private func cleanCookies() {
