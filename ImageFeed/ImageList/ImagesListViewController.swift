@@ -159,7 +159,7 @@ extension ImagesListViewController {
     }
 }
 
-private var dateFormatter: DateFormatter = {
+private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "dd MMMM yyyy"
     formatter.locale = Locale(identifier: "ru_RU")
