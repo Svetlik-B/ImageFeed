@@ -115,7 +115,7 @@ extension ImagesListService {
     fileprivate func updatePhotos(_ data: Data) {
         do {
             let responses = try JSONDecoder().decode(
-                [Response].self,
+                [PhotoResponse].self,
                 from: data
             )
             let photos = try responses.map { try $0.photo }
@@ -130,7 +130,7 @@ extension ImagesListService {
         }
     }
 
-    fileprivate struct Response: Decodable {
+    fileprivate struct PhotoResponse: Decodable {
         var id: String
         var width: Int
         var height: Int

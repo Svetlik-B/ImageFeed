@@ -34,8 +34,28 @@ final class ProfileViewController: UIViewController {
 
     @objc
     private func buttonLogout() {
-        ProfileLogoutService.shared.logout()
-        dismiss(animated: true)
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            .init(
+                title: "Да",
+                style: .default,
+                handler: { [weak self] _ in
+                    ProfileLogoutService.shared.logout()
+                    self?.dismiss(animated: true)
+                }
+            )
+        )
+        alert.addAction(
+            .init(
+                title: "Нет",
+                style: .default
+            )
+        )
+        present(alert, animated: true)
     }
 
     @objc fileprivate func updateAvatar(notification: Notification) {

@@ -13,7 +13,7 @@ class ImagesListCell: UITableViewCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var gradientView: UIView!
     
-    @IBAction func likeButtonClicked(_ sender: UIButton) {
+    @IBAction private func likeButtonClicked(_ sender: UIButton) {
         delegate?.imageListCellDidTapLike(self)
     }
     
