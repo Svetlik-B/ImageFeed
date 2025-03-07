@@ -33,7 +33,30 @@ final class ProfileViewController: UIViewController {
     }
 
     @objc
-    private func buttonLogin() {}
+    private func buttonLogout() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            .init(
+                title: "Да",
+                style: .default,
+                handler: { [weak self] _ in
+                    ProfileLogoutService.shared.logout()
+                    self?.dismiss(animated: true)
+                }
+            )
+        )
+        alert.addAction(
+            .init(
+                title: "Нет",
+                style: .default
+            )
+        )
+        present(alert, animated: true)
+    }
 
     @objc fileprivate func updateAvatar(notification: Notification) {
         guard
@@ -86,7 +109,7 @@ extension ProfileViewController {
         let buttonEntrance = UIButton.systemButton(
             with: UIImage(named: "Exit") ?? UIImage(),
             target: self,
-            action: #selector(buttonLogin))
+            action: #selector(buttonLogout))
 
         [imageView, nameLabel, loginLabel, textLabel, buttonEntrance].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
