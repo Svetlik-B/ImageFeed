@@ -2,11 +2,6 @@ import Foundation
 import UIKit
 import WebKit
 
-enum WebViewConstants {
-    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-    static let path = "/oauth/authorize/native"
-}
-
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(
         _ vc: WebViewViewController,
