@@ -12,7 +12,10 @@ protocol ImageListViewPresenterProtocol {
 }
 
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
-    init (view: ImageListViewControllerProtocol, imagesListService: ImagesListService) {
+    init (
+        view: ImageListViewControllerProtocol,
+        imagesListService: ImagesListServiceProtocol
+    ) {
         self.view = view
         self.imagesListService = imagesListService
         imagesListService.fetchPhotosNextPage()
@@ -23,7 +26,7 @@ final class ImageListViewPresenter: ImageListViewPresenterProtocol {
     }
     private(set) var photos: [Photo] = []
     private weak var view: ImageListViewControllerProtocol?
-    private let imagesListService: ImagesListService
+    private let imagesListService: ImagesListServiceProtocol
 }
 
 extension ImageListViewPresenter {
