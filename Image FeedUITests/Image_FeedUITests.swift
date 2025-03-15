@@ -38,7 +38,34 @@ class Image_FeedUITests: XCTestCase {
     }
     
     func testFeed() throws {
-        // тестируем сценарий ленты
+        let tablesQuery = app.tables
+        
+        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        cell.swipeUp()
+        
+        let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        XCTAssertTrue(cellToLike.waitForExistence(timeout: 5))
+
+        let likeButton = cellToLike.buttons["No Active"]
+        let unlikeButton = cellToLike.buttons["Active"]
+        
+        XCTAssertTrue(likeButton.waitForExistence(timeout: 5))
+        likeButton.tap()
+        
+        XCTAssertTrue(unlikeButton.waitForExistence(timeout: 5))
+        unlikeButton.tap()
+        XCTAssertTrue(likeButton.waitForExistence(timeout: 5))
+        
+        cellToLike.tap()
+        let navBackButtonWhiteButton = app.buttons["Backward"]
+        XCTAssertTrue(navBackButtonWhiteButton.waitForExistence(timeout: 5))
+        
+        let image = app.scrollViews.images.element(boundBy: 0)
+        image.pinch(withScale: 3, velocity: 1)
+        image.pinch(withScale: 0.5, velocity: -1)
+        
+        navBackButtonWhiteButton.tap()
+        XCTAssertTrue(cellToLike.waitForExistence(timeout: 5))
     }
     
     func testProfile() throws {
