@@ -61,11 +61,10 @@ extension ImagesListViewController: ImagesListCellDelegate {
         presenter?.changeLike(
             photoId: photo.id,
             isLike: !photo.isLiked
-        ) { [weak self] result in
+        ) { result in
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
-                self?.presenter?.toggleIsLiked(for: photo.id)
                 cell.setIsLiked(value: !photo.isLiked)
             case .failure(let error):
                 Logger.shared.error("Не удалось поменять Like: \(error)")

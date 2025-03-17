@@ -9,10 +9,11 @@ final class TabBarController: UITabBarController {
             withIdentifier: "ImagesListViewController")
         
         if let vc = imagesListViewController as? ImagesListViewController {
-            vc.presenter = ImageListViewPresenter(
-                view: vc,
-                imagesListService: ImagesListService()
-            )
+            let imagesListService = ImagesListService()
+            let presenter = ImageListViewPresenter(view: vc)
+            presenter.imagesListService = imagesListService
+            vc.presenter = presenter
+            
         } else {
             Logger.shared.error("Could not cast imagesListViewController to ImagesListViewController")
         }

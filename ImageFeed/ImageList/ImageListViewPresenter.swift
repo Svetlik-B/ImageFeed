@@ -7,26 +7,24 @@ protocol ImageListViewPresenterProtocol {
         isLike: Bool,
         _ completion: @escaping (Result<Void, Error>) -> Void
     )
-    func toggleIsLiked(for photoId: String)
     func fetchPhotosNextPage()
 }
 
 final class ImageListViewPresenter: ImageListViewPresenterProtocol {
-    init (
-        view: ImageListViewControllerProtocol,
-        imagesListService: ImagesListServiceProtocol
-    ) {
+    init (view: ImageListViewControllerProtocol) {
         self.view = view
-        self.imagesListService = imagesListService
-        imagesListService.fetchPhotosNextPage()
         addObserver()
     }
     deinit {
         removeObserver()
     }
-    private(set) var photos: [Photo] = []
+    var photos: [Photo] = []
+    var imagesListService: ImagesListServiceProtocol? {
+        didSet {
+            imagesListService?.fetchPhotosNextPage()
+        }
+    }
     private weak var view: ImageListViewControllerProtocol?
-    private let imagesListService: ImagesListServiceProtocol
 }
 
 extension ImageListViewPresenter {
@@ -35,25 +33,30 @@ extension ImageListViewPresenter {
         isLike: Bool,
         _ completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        imagesListService.changeLike(
+        imagesListService?.changeLike(
             photoId: photoId,
-            isLike: isLike,
-            completion
-        )
+            isLike: isLike
+        ) { result in
+            switch result {
+            case .success:
+                self.toggleIsLiked(for: photoId)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     func fetchPhotosNextPage() {
-        imagesListService.fetchPhotosNextPage()
+        imagesListService?.fetchPhotosNextPage()
     }
+}
+
+// MARK: Implementation
+extension ImageListViewPresenter {
     func toggleIsLiked(for photoId: String) {
         if let index = photos.firstIndex(where: { $0.id == photoId }) {
             photos[keyPath: \.[index].isLiked].toggle()
         }
     }
-}
-
-// MARK: Implementation
-
-extension ImageListViewPresenter {
     fileprivate func addObserver() {
         NotificationCenter.default.addObserver(
             self,
@@ -69,7 +72,11 @@ extension ImageListViewPresenter {
             object: nil
         )
     }
-    @objc fileprivate func updateTableViewAnimated() {
+    @objc func updateTableViewAnimated() {
+        guard let imagesListService
+        else {
+            return
+        }
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         photos = imagesListService.photos

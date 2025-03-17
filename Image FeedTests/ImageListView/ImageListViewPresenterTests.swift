@@ -3,104 +3,116 @@ import XCTest
 @testable import ImageFeed
 
 final class ImageListViewPresenterTests: XCTestCase {
-    func test_constructor() {
+    func test_setImageListService() {
         // given
-        let imageListServiceSpy = ImagesListServiceSpy()
         let viewSpy = ImagesListViewControllerSpy()
-        
+        let presenter = ImageListViewPresenter(view: viewSpy)
+        let imageListServiceSpy = ImagesListServiceSpy()
+        imageListServiceSpy.presenter = presenter
         // when
-        let presenter = ImageListViewPresenter(
-            view: viewSpy,
-            imagesListService: imageListServiceSpy
-        )
-        wait(for: [viewSpy.expectation])
+
+        presenter.imagesListService = imageListServiceSpy
         
         // then
         XCTAssertEqual(imageListServiceSpy.fetchPhotosNextPageCount, 1)
-        XCTAssertEqual(presenter.photos.count, imageListServiceSpy.photos.count)
         XCTAssertEqual(viewSpy.oldCount, 0)
-        XCTAssertEqual(viewSpy.newCount, 2)
+        XCTAssertEqual(viewSpy.newCount, 10)
     }
     func test_fetchPhotosNextPage() {
         // given
+        let viewSpy = ImagesListViewControllerSpy()
+        let presenter = ImageListViewPresenter(view: viewSpy)
         let imageListServiceSpy = ImagesListServiceSpy()
-        let presenter = ImageListViewPresenter(
-            view: ImagesListViewControllerSpy(),
-            imagesListService: imageListServiceSpy
-        )
+        imageListServiceSpy.presenter = presenter
+        presenter.imagesListService = imageListServiceSpy
         XCTAssertEqual(imageListServiceSpy.fetchPhotosNextPageCount, 1)
-        
+        XCTAssertEqual(viewSpy.newCount, 10)
+
         // when
         presenter.fetchPhotosNextPage()
-        
+
         // then
         XCTAssertEqual(imageListServiceSpy.fetchPhotosNextPageCount, 2)
+        XCTAssertEqual(viewSpy.oldCount, 10)
+        XCTAssertEqual(viewSpy.newCount, 20)
+    }
+    func test_changeLike() {
+        // given
+        let viewSpy = ImagesListViewControllerSpy()
+        let presenter = ImageListViewPresenter(view: viewSpy)
+        let imageListServiceSpy = ImagesListServiceSpy()
+        imageListServiceSpy.presenter = presenter
+        presenter.imagesListService = imageListServiceSpy
+
+        XCTAssertFalse(presenter.photos[3].isLiked)
+
+        // when
+        presenter.changeLike(photoId: "3", isLike: true) { _ in  }
+
+        // then
+        XCTAssertTrue(imageListServiceSpy.changeLikeIsCalled)
+        XCTAssertTrue(presenter.photos[3].isLiked)
     }
     func test_toggleIsLiked() {
         // given
         let viewSpy = ImagesListViewControllerSpy()
+        let presenter = ImageListViewPresenter(view: viewSpy)
         let imageListServiceSpy = ImagesListServiceSpy()
-        let presenter = ImageListViewPresenter(
-            view: viewSpy,
-            imagesListService: imageListServiceSpy
-        )
-        wait(for: [viewSpy.expectation])
-        XCTAssertTrue(presenter.photos[1].isLiked)
-        
+        imageListServiceSpy.presenter = presenter
+        presenter.imagesListService = imageListServiceSpy
+
+        XCTAssertFalse(presenter.photos[9].isLiked)
+
         // when
-        presenter.toggleIsLiked(for: "2")
-        
+        presenter.toggleIsLiked(for: "9")
+
         // then
-        XCTAssertFalse(presenter.photos[1].isLiked)
+        XCTAssertTrue(presenter.photos[9].isLiked)
     }
 }
 
 final class ImagesListViewControllerSpy: ImageListViewControllerProtocol {
-    let expectation = XCTestExpectation(description: "updateTableViewAnimated called")
     var oldCount: Int?
     var newCount: Int?
     func updateTableViewAnimated(oldCount: Int, newCount: Int) {
         self.oldCount = oldCount
         self.newCount = newCount
-        expectation.fulfill()
     }
+}
+
+func mockPhoto(id: String) -> ImageFeed.Photo {
+    .init(
+        id: id,
+        size: .zero,
+        thumbImageURL: URL(string: "https://example.com/thumb1.jpg")!,
+        largeImageURL: URL(string: "https://example.com/large1.jpg")!,
+        isLiked: false
+    )
 }
 
 final class ImagesListServiceSpy: ImagesListServiceProtocol {
     var fetchPhotosNextPageCount = 0
     var changeLikeIsCalled = false
-    var photos: [ImageFeed.Photo] = [
-        .init(
-            id: "1",
-            size: .zero,
-            thumbImageURL: URL(string: "https://example.com/thumb1.jpg")!,
-            largeImageURL: URL(string: "https://example.com/large1.jpg")!,
-            isLiked: false
-        ),
-        .init(
-            id: "2",
-            size: .zero,
-            thumbImageURL: URL(string: "https://example.com/thumb2.jpg")!,
-            largeImageURL: URL(string: "https://example.com/large2.jpg")!,
-            isLiked: true
-        ),
-    ]
-    
+    var photos = [ImageFeed.Photo]()
+    var presenter: ImageListViewPresenter?
+
     func fetchPhotosNextPage() {
-        fetchPhotosNextPageCount += 1
-        NotificationCenter.default.post(
-            name: ImagesListService.didChangeNotification,
-            object: nil
+        photos.append(
+            contentsOf: (photos.count ..< photos.count + 10)
+                .map(String.init)
+                .map(mockPhoto)
         )
+        fetchPhotosNextPageCount += 1
+        presenter?.updateTableViewAnimated()
     }
-    
+
     func changeLike(
         photoId: String,
         isLike: Bool,
         _ completion: @escaping (Result<Void, any Error>) -> Void
     ) {
         changeLikeIsCalled = true
+        completion(.success(()))
     }
-    
-    
+
 }
