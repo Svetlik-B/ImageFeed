@@ -93,6 +93,7 @@ extension ProfileViewController {
         ])
 
         nameLabel.text = "Екатерина Новикова"
+        nameLabel.accessibilityIdentifier = "nameLabel"
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = .white
         NSLayoutConstraint.activate([
@@ -101,6 +102,7 @@ extension ProfileViewController {
         ])
 
         loginLabel.text = "@ekaterina_nov"
+        loginLabel.accessibilityIdentifier = "loginLabel"
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.textColor = UIColor.ypGray
         NSLayoutConstraint.activate([
