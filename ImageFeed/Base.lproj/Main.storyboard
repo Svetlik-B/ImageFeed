@@ -101,6 +101,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lf5-zG-BkH">
                                 <rect key="frame" x="16" y="702" width="370" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="oqv-dD-cYl"/>
                                 </constraints>
@@ -138,7 +139,7 @@
         <!--Web View View Controller-->
         <scene sceneID="Kx3-WT-NLS">
             <objects>
-                <viewController id="nxW-lF-Ar3" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="nxW-lF-Ar3" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Lp-oG-gVP">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="864"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -255,6 +256,7 @@
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGy-9j-auf">
                                                             <rect key="frame" x="326" y="0.0" width="44" height="44"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="LikeButton"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="7bJ-LF-Nqp"/>
                                                                 <constraint firstAttribute="width" constant="44" id="eDl-Ek-syX"/>

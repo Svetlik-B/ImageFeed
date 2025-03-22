@@ -1,35 +1,44 @@
 import Kingfisher
 import UIKit
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    var isViewLoaded: Bool { get }
+    func updateAvatar(_: URL)
+    func updateProfileDetails(profile: ProfileService.Profile)
+    func dismiss()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    var presenter: ProfileViewPresenterProtocol?
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
     private let textLabel = UILabel()
     private let imageView = UIImageView()
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        addObserver()
+    func updateAvatar(_ avatarURL: URL) {
+        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        self.imageView.kf.setImage(
+            with: avatarURL,
+            placeholder: UIImage(named: "tab_profile_active"),
+            options: [.processor(processor), .forceRefresh]
+        )
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        addObserver()
+    func updateProfileDetails(profile: ProfileService.Profile) {
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        textLabel.text = profile.bio
     }
 
-    deinit {
-        removeObserver()
+    func dismiss() {
+        dismiss(animated: true)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let avatarURL = ProfileImageService.shared.imageURL {
-            updateAvatar(avatarURL)
-        }
         setupUI()
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        }
+        presenter?.viewDidLoad()
     }
 
     @objc
@@ -44,8 +53,7 @@ final class ProfileViewController: UIViewController {
                 title: "Да",
                 style: .default,
                 handler: { [weak self] _ in
-                    ProfileLogoutService.shared.logout()
-                    self?.dismiss(animated: true)
+                    self?.presenter?.logout()
                 }
             )
         )
@@ -58,51 +66,10 @@ final class ProfileViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    @objc fileprivate func updateAvatar(notification: Notification) {
-        guard
-            isViewLoaded,
-            let userInfo = notification.userInfo,
-            let profileImageURL = userInfo["URL"] as? URL
-        else { return }
-        DispatchQueue.main.async { [weak self] in
-            self?.updateAvatar(profileImageURL)
-        }
-    }
 }
 
 // MARK: - Implementation
 extension ProfileViewController {
-    fileprivate enum Constant {
-        static let imageDiameter: CGFloat = 70
-    }
-    fileprivate func addObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateAvatar(notification:)),
-            name: ProfileImageService.didChangeNotification,
-            object: nil
-        )
-    }
-    fileprivate func removeObserver() {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: ProfileImageService.didChangeNotification,
-            object: nil
-        )
-    }
-    fileprivate func updateProfileDetails(profile: ProfileService.Profile) {
-        nameLabel.text = profile.name
-        loginLabel.text = profile.loginName
-        textLabel.text = profile.bio
-    }
-    fileprivate func updateAvatar(_ avatarURL: URL) {
-        let processor = RoundCornerImageProcessor(cornerRadius: 20)
-        self.imageView.kf.setImage(
-            with: avatarURL,
-            placeholder: UIImage(named: "tab_profile_active"),
-            options: [.processor(processor), .forceRefresh]
-        )
-    }
     fileprivate func setupUI() {
         view.backgroundColor = UIColor(named: "YP Black")
         imageView.tintColor = .gray
@@ -117,7 +84,7 @@ extension ProfileViewController {
         }
 
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: Constant.imageDiameter),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
             imageView.leadingAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -126,6 +93,7 @@ extension ProfileViewController {
         ])
 
         nameLabel.text = "Екатерина Новикова"
+        nameLabel.accessibilityIdentifier = "nameLabel"
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = .white
         NSLayoutConstraint.activate([
@@ -134,6 +102,7 @@ extension ProfileViewController {
         ])
 
         loginLabel.text = "@ekaterina_nov"
+        loginLabel.accessibilityIdentifier = "loginLabel"
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.textColor = UIColor.ypGray
         NSLayoutConstraint.activate([
@@ -160,5 +129,4 @@ extension ProfileViewController {
             buttonEntrance.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
         ])
     }
-
 }

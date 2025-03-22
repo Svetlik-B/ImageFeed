@@ -1,21 +1,18 @@
 import UIKit
 
+protocol ImageListViewControllerProtocol: AnyObject {
+    func updateTableViewAnimated(oldCount: Int, newCount: Int)
+}
+
 final class ImagesListViewController: UIViewController {
+    var presenter: ImageListViewPresenterProtocol?
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private var photos: [Photo] = []
-    private var imagesListService = ImagesListService()
 
     @IBOutlet private var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        addObserver()
-        imagesListService.fetchPhotosNextPage()
-    }
-
-    deinit {
-        removeObserver()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -38,20 +35,36 @@ final class ImagesListViewController: UIViewController {
     }
 }
 
+// MARK: - ImageImagesListViewControllerProtocol
+extension ImagesListViewController: ImageListViewControllerProtocol {
+    func updateTableViewAnimated(oldCount: Int, newCount: Int) {
+        tableView.performBatchUpdates {
+            let indexPaths = (oldCount..<newCount).map { i in
+                IndexPath(row: i, section: 0)
+            }
+            tableView.insertRows(at: indexPaths, with: .automatic)
+        } completion: { _ in
+        }
+    }
+}
+
 // MARK: - ImagesListCellDelegate
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
+        guard
+            let indexPath = tableView.indexPath(for: cell),
+            let photo = presenter?.photos[indexPath.row]
+        else {
+            return
+        }
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(
+        presenter?.changeLike(
             photoId: photo.id,
             isLike: !photo.isLiked
-        ) { [weak self] result in
+        ) { result in
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
-                self?.toggleIsLiked(for: photo.id)
                 cell.setIsLiked(value: !photo.isLiked)
             case .failure(let error):
                 Logger.shared.error("Не удалось поменять Like: \(error)")
@@ -63,7 +76,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
 // MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photos.count
+        return presenter?.photos.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,34 +99,36 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photo = photos[indexPath.row]
+        guard let photo = presenter?.photos[indexPath.row]
+        else { return 0 }
         return tableView.bounds.width * photo.size.height / photo.size.width
     }
     func tableView(
         _ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath
     ) {
-        if indexPath.row == photos.count - 1 {
-            imagesListService.fetchPhotosNextPage()
+        guard let presenter
+        else { return }
+        if indexPath.row == presenter.photos.count - 1 {
+            presenter.fetchPhotosNextPage()
         }
     }
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            performSegue(
-                withIdentifier: showSingleImageSegueIdentifier,
-                sender: photos[indexPath.row]
-            )
-        }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let presenter
+        else { return }
+        performSegue(
+            withIdentifier: showSingleImageSegueIdentifier,
+            sender: presenter.photos[indexPath.row]
+        )
+    }
 }
 
 // MARK: - Implementation
 extension ImagesListViewController {
-    fileprivate func toggleIsLiked(for photoId: String) {
-        if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-            photos[keyPath: \.[index].isLiked].toggle()
-        }
-    }
     fileprivate func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        guard let presenter
+        else { return }
         cell.gradient.frame.size.width = tableView.bounds.width
-        let photo = photos[indexPath.row]
+        let photo = presenter.photos[indexPath.row]
         cell.photo.kf.setImage(
             with: photo.thumbImageURL,
             placeholder: UIImage(named: "Stub")
@@ -127,35 +142,6 @@ extension ImagesListViewController {
         }
         cell.setIsLiked(value: photo.isLiked)
         cell.delegate = self
-    }
-    @objc fileprivate func updateTableViewAnimated() {
-        let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in
-            }
-        }
-    }
-    fileprivate func addObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateTableViewAnimated),
-            name: ImagesListService.didChangeNotification,
-            object: nil
-        )
-    }
-    fileprivate func removeObserver() {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: ImagesListService.didChangeNotification,
-            object: nil
-        )
     }
 }
 
